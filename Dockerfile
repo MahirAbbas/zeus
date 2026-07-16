@@ -112,7 +112,7 @@ RUN --mount=type=cache,target=/odin/eiger-detector/build \
     make install
 
 WORKDIR /odin/eiger-detector/python
-RUN uv pip install --python /venv/bin/python '.[dev,sim]' --refresh
+RUN uv pip install --python /venv/bin/python '.[dev,sim]' 
 WORKDIR /odin/odin-data
 RUN uv pip install --python /venv/bin/python $([ -f dev-requirements.txt ] && echo '-c dev-requirements.txt') -e './python[dev]'
 

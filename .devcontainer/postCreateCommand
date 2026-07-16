@@ -27,7 +27,6 @@ if [[ -f /workspaces/.devcontainer_rc ]] ; then
 fi
 
 (cd tickit-devices/ && uv venv --clear && uv sync && pre-commit install --install-hooks)
-#(cd /workspaces/zeus/eiger-detector/vscode_build && make clean)
-#cmake -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_INSTALL_PREFIX:STRING=/odin -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ -DODINDATA_ROOT_DIR=/odin --no-warn-unused-cli -S /workspaces/zeus/eiger-detector/cpp -B /workspaces/zeus/eiger-detector/vscode_build -G "Unix Makefiles"
-
-#cmake --build /workspaces/zeus/eiger-detector/vscode_build --config RelWithDebInfo --target install VERBOSE=1 -j 20 --
+(cd /workspaces/zeus/eiger-detector/vscode_build && make clean)
+cmake -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_INSTALL_PREFIX:STRING=/odin -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ -DODINDATA_ROOT_DIR=/odin --no-warn-unused-cli -S /workspaces/zeus/eiger-detector/cpp -B /workspaces/zeus/eiger-detector/vscode_build -G "Unix Makefiles"
+cmake --build /workspaces/zeus/eiger-detector/vscode_build --config RelWithDebInfo --target install VERBOSE=1 -j 20 --
