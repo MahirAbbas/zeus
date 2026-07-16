@@ -1,0 +1,15 @@
+[submodule "odin-data"]
+	path = odin-data
+	url = https://github.com/odin-detector/odin-data
+[submodule "hdf5filters"]
+	path = hdf5filters
+	url = https://github.com/DiamondLightSource/hdf5filters
+[submodule "tickit-devices"]
+	path = tickit-devices
+	url = https://github.com/DiamondLightSource/tickit-devices
+[submodule "fastcs-eiger"]
+	path = fastcs-eiger
+	url = https://github.com/DiamondLightSource/fastcs-eiger
+[submodule "eiger-detector"]
+	path = eiger-detector
+	url = https://github.com/DiamondLightSource/eiger-detector
