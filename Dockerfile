@@ -121,6 +121,8 @@ WORKDIR /odin/fastcs-eiger
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-editable --no-dev
 
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --python /venv/bin/python git+https://github.com/odin-detector/odin-control@1cf475b60abf66666d31c7e74b9d19540c2ea6c3
 
 # Build stage - throwaway stage for runtime assets #############################
 FROM developer AS build
