@@ -1,0 +1,103 @@
+/*
+ * BloscPlugin.h
+ *
+ *  Created on: 22 Jan 2018
+ *      Author: Ulrik Pedersen
+ */
+
+#ifndef BLOSCPLUGIN_H_
+#define BLOSCPLUGIN_H_
+
+#include <log4cxx/logger.h>
+using namespace log4cxx;
+
+#include "ClassLoader.h"
+#include "FrameProcessorPlugin.h"
+
+namespace FrameProcessor {
+
+typedef struct {
+    int compression_level;
+    std::string shuffle;
+    size_t type_size;
+    size_t uncompressed_size;
+    unsigned int threads;
+    std::string blosc_compressor;
+} BloscCompressionSettings;
+void create_cd_values(const BloscCompressionSettings& settings, std::vector<unsigned int> cd_values);
+
+/**
+ * This is a compression plugin using the Blosc library
+ *
+ * When this plugin receives a frame, processFrame is called and the class
+ * uses the blosc compression methods to compress the data and output a new,
+ * compressed Frame.
+ */
+class BloscPlugin : public FrameProcessorPlugin {
+
+public:
+    BloscPlugin();
+    virtual ~BloscPlugin();
+
+    /** Configuration constants */
+    static const std::string CONFIG_BLOSC_COMPRESSOR;
+    static const std::string CONFIG_BLOSC_THREADS;
+    static const std::string CONFIG_BLOSC_LEVEL;
+    static const std::string CONFIG_BLOSC_SHUFFLE;
+    static const std::string CONFIG_BLOSC_MODE;
+
+    constexpr static char BLOSC_NOSHUFFLE_STR[] = "noshuffle";
+    constexpr static char BLOSC_SHUFFLE_STR[] = "shuffle";
+    constexpr static char BLOSC_BITSHUFFLE_STR[] = "bitshuffle";
+
+    constexpr static char BLOSC_COMPRESS_MODE_STR[] = "compress";
+    constexpr static char BLOSC_DECOMPRESS_MODE_STR[] = "decompress";
+    constexpr static char BLOSC_OFF_MODE_STR[] = "off";
+
+    // Baseclass API to implement:
+    void process_frame(boost::shared_ptr<Frame> frame);
+    void configure(OdinData::IpcMessage& config, OdinData::IpcMessage& reply);
+    void requestConfiguration(OdinData::IpcMessage& reply);
+    int get_version_major();
+    int get_version_minor();
+    int get_version_patch();
+    std::string get_version_short();
+    std::string get_version_long();
+
+private:
+    // Methods unique to this class
+    std::pair<boost::shared_ptr<Frame>, bool> compress_frame(const boost::shared_ptr<Frame>& frame);
+    std::pair<boost::shared_ptr<Frame>, bool> decompress_frame(const boost::shared_ptr<Frame>& frame);
+    void update_compression_settings();
+    friend struct Mode_map;
+    enum class Mode {
+        COMPRESS,
+        DECOMPRESS,
+        OFF
+    };
+    typedef struct {
+        size_t type_size;
+        size_t uncompressed_size;
+        unsigned int threads;
+        unsigned int blosc_compressor;
+    } BloscDecompressionSettings;
+    // private data
+    /** Pointer to logger */
+    LoggerPtr logger_;
+    /** Mutex used to make this class thread safe */
+    std::mutex mutex_;
+    /** Current acquisition ID */
+    std::string current_acquisition_;
+    /** Compression settings */
+    BloscCompressionSettings compression_settings_;
+    /** Compression settings for the next acquisition */
+    BloscCompressionSettings commanded_compression_settings_;
+    /** Current Mode the plugin is configured to */
+    Mode plugin_mode_;
+    /** Plugin mode for the next acquisition */
+    Mode commanded_plugin_mode_;
+};
+
+} /* namespace FrameProcessor */
+
+#endif /* BLOSCPLUGIN_H_ */
