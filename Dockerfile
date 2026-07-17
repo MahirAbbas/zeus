@@ -46,6 +46,7 @@ ENV CCACHE_DIR=/root/.cache/ccache
 ENV PATH="/venv/bin:$PATH"
 ENV UV_LINK_MODE=copy
 ENV UV_COMPILE_BYTECODE=1
+ENV SETUPTOOLS_SCM_PRETEND_VERSION=1.12.0
 
 RUN uv venv /venv
     
