@@ -1,0 +1,20 @@
+# Changes here will be overwritten by Copier
+_commit: 5.0.2
+_src_path: gh:DiamondLightSource/python-copier-template
+author_email: gary.yendell@diamond.ac.uk
+author_name: Gary Yendell
+component_lifecycle: experimental
+component_owner: user:mef65357
+component_type: service
+description: Eiger control system integration with FastCS
+distribution_name: fastcs-eiger
+docker: true
+docker_debug: true
+docs_type: sphinx
+git_platform: github.com
+github_org: DiamondLightSource
+package_name: fastcs_eiger
+pypi: true
+repo_name: fastcs-eiger
+strict_typing: false
+type_checker: pyright
