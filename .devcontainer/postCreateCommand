@@ -26,7 +26,11 @@ if [[ -f /workspaces/.devcontainer_rc ]] ; then
     source /workspaces/.devcontainer_rc
 fi
 
-(cd tickit-devices/ && uv venv --clear && uv sync && pre-commit install --install-hooks)
+(cd tickit-devices/ && UV_PROJECT_ENVIRONMENT=".venv" uv sync && pre-commit install --install-hooks)
 (cd /workspaces/zeus/eiger-detector/vscode_build && make clean)
 cmake -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_INSTALL_PREFIX:STRING=/odin -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++ -DODINDATA_ROOT_DIR=/odin --no-warn-unused-cli -S /workspaces/zeus/eiger-detector/cpp -B /workspaces/zeus/eiger-detector/vscode_build -G "Unix Makefiles"
 cmake --build /workspaces/zeus/eiger-detector/vscode_build --config RelWithDebInfo --target install VERBOSE=1 -j 20 --
+(cd fastcs-eiger/ && UV_PROJECT_ENVIRONMENT=".venv" uv sync --locked --no-editable --no-dev)
+
+#uv run --project /workspaces/zeus/tickit-devices python -m tickit all tickit-devices/examples/configs/eiger/eiger.yaml
+#uv run --project /workspaces/zeus/fastcs-eiger fastcs-eiger ioc EIGER --odin-ip 127.0.0.1
