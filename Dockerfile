@@ -105,6 +105,7 @@ RUN --mount=type=cache,target=/odin/eiger-detector/build \
     mkdir -p build && cd build && \
     cmake   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_STANDARD=17 \
             -DCMAKE_INSTALL_PREFIX=/odin \
             -DODINDATA_ROOT_DIR=/odin \
             ../cpp && \
