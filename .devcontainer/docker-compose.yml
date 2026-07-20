@@ -1,0 +1,32 @@
+services:
+  eiger-detector:
+    build:
+      context: .
+      dockerfile: ../eiger-detector/Dockerfile
+      target: developer
+    network_mode: "host"
+    volumes:
+      - ../eiger-detector:/workspaces/zeus/eiger-detector:cached
+    command: sleep infinity
+
+  tickit:
+    build: 
+      context: .
+      dockerfile: ../tickit-devices/Dockerfile
+      target: developer
+    network_mode: "host"
+    volumes:
+      - ../tickit-devices:/workspaces/zeus/tickit-devices:cached
+    command: sleep infinity
+  
+  fastcs-eiger:
+    build:
+      context: .
+      dockerfile: ../fastcs-eiger/Dockerfile
+      target: developer
+    network_mode: "host"
+    volumes:
+      - ../fastcs-eiger:/workspaces/zeus/fastcs-eiger:cached
+    command: sleep infinity
+    
+
