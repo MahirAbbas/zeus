@@ -1,9 +1,0 @@
-{
-    "plugin": "Acquisition",
-    "parameter": "closefile",
-    "type": "string",
-    "header": {
-        "acqID": "test_0_0",
-        "rank": 0
-    }
-}

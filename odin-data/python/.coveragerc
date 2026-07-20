@@ -1,5 +1,0 @@
-[run]
-omit = *_version*
-
-[report]
-show_missing = true

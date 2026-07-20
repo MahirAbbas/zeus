@@ -1,0 +1,62 @@
+name: zeus-dev
+
+services:
+  workspace:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: developer
+    command: sleep infinity
+    init: true
+    working_dir: /workspaces/zeus
+    volumes:
+      - ..:/workspaces/zeus:cached
+      - zeus-dev-cache:/cache
+    networks:
+      - mock_devices
+
+  # Simulated physical Eiger HTTP/ZMQ endpoints.
+  eiger-simulator:
+    working_dir: /workspaces/zeus
+    environment:
+      PYTHONPATH: /workspaces/zeus/tickit-devices/src:/workspaces/zeus/eiger-detector/python
+    volumes:
+      - ..:/workspaces/zeus:cached
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl --fail --silent http://127.0.0.1:8081/detector/api/1.8.0/version
+      interval: 3s
+      timeout: 2s
+      retries: 20
+    networks:
+      mock_devices:
+        aliases:
+          # Use these names from other containers instead of real hardware names/IPs.
+          - eiger
+          - eiger-detector
+          # Odin control shares this container's network namespace below.
+          - odin-control
+
+  # Existing Odin deployment scripts retain their 127.0.0.1 assumptions.
+  # Sharing Eiger's network namespace makes its localhost:8081 point at Tickit.
+  odin-stack:
+    network_mode: service:eiger-simulator
+    depends_on:
+      eiger-simulator:
+        condition: service_healthy
+    working_dir: /workspaces/zeus/eiger-detector/deploy
+    environment:
+      PYTHONPATH: /workspaces/zeus/eiger-detector/python
+    volumes:
+      - ..:/workspaces/zeus:cached
+    shm_size: 2gb
+    command:
+
+networks:
+  mock_devices:
+    driver: bridge
+    name: zeus-mock-dev
+
+volumes:
+  zeus-dev-cache:

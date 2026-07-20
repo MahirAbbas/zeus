@@ -1,9 +1,0 @@
-{
-    "plugin": "eiger",
-    "parameter": "eiger-end",
-    "type": "string",
-    "header": {
-        "acqID": "test_0_0",
-        "series": 40181
-    }
-}

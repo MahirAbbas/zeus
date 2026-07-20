@@ -1,0 +1,33 @@
+{
+  "name": "Zeus — Full Stack Simulation",
+  "dockerComposeFile": ["../docker-compose.dev.yml"],
+  "service": "workspace",
+  "runServices": ["workspace", "eiger-simulator", "odin-stack"],
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspaces/zeus",
+
+  "remoteUser": "root",
+
+  "remoteEnv": {
+    "UV_CACHE_DIR": "/cache/uv",
+    "UV_PYTHON_CACHE_DIR": "/cache/uv-python",
+    "VIRTUAL_ENV": "/venv",
+    "PATH": "/venv/bin:${containerEnv:PATH}"
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/venv/bin/python",
+        "python.terminal.activateEnvironment": false
+      },
+      "extensions": [
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "redhat.vscode-yaml",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools"
+      ]
+    }
+  }
+}
